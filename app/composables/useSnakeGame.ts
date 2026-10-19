@@ -1,4 +1,4 @@
-import type { Direction } from '../types/game'
+import type { Direction, GameDifficulty } from '../types/game'
 import { GRID, createState, queueDirection, speedMs, step } from '../utils/gameEngine'
 
 const KEYS: Record<string, Direction> = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' }
@@ -6,6 +6,7 @@ const KEYS: Record<string, Direction> = { ArrowUp: 'up', ArrowDown: 'down', Arro
 export function useSnakeGame() {
   const state = reactive(createState(GRID))
   const best = ref(0)
+  const difficulty = ref<GameDifficulty>('normal')
   const feedback = ref<'ok' | 'bad' | null>(null)
   let raf = 0, last = 0, acc = 0
   let fbTimer: ReturnType<typeof setTimeout> | undefined
@@ -18,8 +19,8 @@ export function useSnakeGame() {
     raf = requestAnimationFrame(frame)
     acc += Math.min(t - last, 100)
     last = t
-    while (state.status === 'playing' && acc >= speedMs(state.snake.length)) {
-      acc -= speedMs(state.snake.length)
+    while (state.status === 'playing' && acc >= speedMs(state.snake.length, difficulty.value)) {
+      acc -= speedMs(state.snake.length, difficulty.value)
       const ev = step(state)
       if (ev === 'correct') {
         flash('ok')
@@ -67,5 +68,5 @@ export function useSnakeGame() {
     document.removeEventListener('visibilitychange', onVisibility)
   })
 
-  return { state, best, feedback, start, restart, togglePause, turn }
+  return { state, best, difficulty, feedback, start, restart, togglePause, turn }
 }

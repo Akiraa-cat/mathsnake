@@ -69,9 +69,15 @@ describe('engine', () => {
     expect(queueDirection(s, 'down')).toBe(false)
   })
   it('increases speed gradually with snake length within comfortable limits', () => {
+    expect(speedMs(3, 'beginner')).toBe(260)
     expect(speedMs(3)).toBe(190)
+    expect(speedMs(3, 'nightmare')).toBe(135)
+    expect(speedMs(8, 'beginner')).toBe(240)
     expect(speedMs(8)).toBe(165)
+    expect(speedMs(8, 'nightmare')).toBe(120)
+    expect(speedMs(100, 'beginner')).toBe(190)
     expect(speedMs(20)).toBe(135)
+    expect(speedMs(100, 'nightmare')).toBe(90)
   })
   it('wall collision ends the game', () => {
     const s = playing({ snake: [{ x: 14, y: 3 }, { x: 13, y: 3 }, { x: 12, y: 3 }] })

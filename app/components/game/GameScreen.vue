@@ -4,7 +4,12 @@ import { SKINS } from '~/composables/useSnakeSkin'
 
 const { theme, toggle: toggleTheme } = useTheme()
 const skin = useSnakeSkin()
-const { state, best, feedback, start, restart, togglePause, turn } = useSnakeGame()
+const { state, best, difficulty, feedback, start, restart, togglePause, turn } = useSnakeGame()
+const difficulties = [
+  { id: 'beginner', label: 'Beginner' },
+  { id: 'normal', label: 'Normal' },
+  { id: 'nightmare', label: 'Nightmare' }
+] as const
 const snakeColor = computed(() => skin.color(theme.value))
 const onPlayPause = () => (state.status === 'ready' ? start() : togglePause())
 </script>
@@ -17,6 +22,16 @@ const onPlayPause = () => (state.status === 'ready' ? start() : togglePause())
         <Sun v-if="theme === 'dark'" :size="20" /><Moon v-else :size="20" />
       </button>
     </header>
+
+    <div class="mx-auto w-full max-w-[520px]">
+      <p id="difficulty-label" class="muted mb-1 text-center text-sm">Speed</p>
+      <div class="grid grid-cols-3 gap-2" role="group" aria-labelledby="difficulty-label">
+        <button v-for="option in difficulties" :key="option.id" class="btn difficulty-option"
+          :aria-pressed="difficulty === option.id" @click="difficulty = option.id">
+          {{ option.label }}
+        </button>
+      </div>
+    </div>
 
     <p class="question mono" :class="feedback ? `fb-${feedback}` : ''" aria-live="polite">{{ state.question.text }}</p>
 
@@ -36,6 +51,7 @@ const onPlayPause = () => (state.status === 'ready' ? start() : togglePause())
     </div>
 
     <DirectionPad @turn="turn" />
+    <p class="control-hint muted text-center text-xs">Swipe to steer or use the arrows</p>
 
     <div class="mx-auto flex items-center gap-3" role="radiogroup" aria-label="Snake Color">
       <span class="muted text-sm">Snake Color</span>

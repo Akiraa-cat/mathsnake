@@ -1,4 +1,4 @@
-import type { Direction, GameState, Point, StepEvent } from '../types/game'
+import type { Direction, GameDifficulty, GameState, Point, StepEvent } from '../types/game'
 import type { Rng } from '../types/math'
 import { generateQuestion } from './mathGenerator'
 import { makeFruits } from './fruitGenerator'
@@ -7,7 +7,16 @@ export const GRID = 15
 const VEC: Record<Direction, Point> = { up: { x: 0, y: -1 }, down: { x: 0, y: 1 }, left: { x: -1, y: 0 }, right: { x: 1, y: 0 } }
 const OPPOSITE: Record<Direction, Direction> = { up: 'down', down: 'up', left: 'right', right: 'left' }
 
-export const speedMs = (snakeLength: number) => Math.max(135, 190 - Math.max(0, snakeLength - 3) * 5)
+const SPEEDS: Record<GameDifficulty, { initial: number; decrement: number; minimum: number }> = {
+  beginner: { initial: 260, decrement: 4, minimum: 190 },
+  normal: { initial: 190, decrement: 5, minimum: 135 },
+  nightmare: { initial: 135, decrement: 3, minimum: 90 }
+}
+
+export const speedMs = (snakeLength: number, difficulty: GameDifficulty = 'normal') => {
+  const speed = SPEEDS[difficulty]
+  return Math.max(speed.minimum, speed.initial - Math.max(0, snakeLength - 3) * speed.decrement)
+}
 
 export function createState(size = GRID, rng: Rng = Math.random): GameState {
   const m = Math.floor(size / 2)

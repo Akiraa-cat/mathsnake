@@ -16,6 +16,9 @@ html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', 
   border-radius:10px; background:var(--surface); color:var(--text); font-weight:500; border:0; cursor:pointer; }
 .btn-primary { background:var(--accent); color:var(--on-accent); font-weight:700; }
 button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.difficulty-option { padding:0 .4rem; font-size:.875rem; }
+.difficulty-option[aria-pressed='true'] { background:var(--accent); color:var(--on-accent); font-weight:700; }
+.control-hint { display:none; }
 .arena { background:var(--arena); border:2px solid var(--text); border-radius:12px; }
 .question { font-size:clamp(1.9rem, 9vw, 2.75rem); font-weight:700; letter-spacing:-.01em; text-align:center; min-height:1.3em; }
 .muted { color:var(--muted); }
@@ -28,7 +31,10 @@ button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .snake-preview__head { width:18px; height:16px; border-radius:7px 7px 5px 5px; }
 .snake-preview__head::after { position:absolute; top:4px; right:3px; width:3px; height:3px; border-radius:50%; background:var(--eye); content:''; box-shadow:0 5px 0 var(--eye); }
 .pad { display:none; grid-template-columns:repeat(3,52px); grid-template-rows:repeat(2,52px); gap:6px; justify-content:center; }
-@media (pointer:coarse) { .pad { display:grid; } }
+@media (pointer:coarse) {
+  .pad { display:grid; }
+  .control-hint { display:block; }
+}
 .safe-bottom { padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
 .fb-ok { animation: pop .35s ease-out; color: var(--accent); }
 .fb-bad { animation: shake .35s ease-out; }

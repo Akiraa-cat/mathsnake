@@ -1,6 +1,7 @@
 import type { Question } from './math'
 export interface Point { x: number; y: number }
 export type Direction = 'up' | 'down' | 'left' | 'right'
+export type GameDifficulty = 'beginner' | 'normal' | 'nightmare'
 export type GameStatus = 'ready' | 'playing' | 'paused' | 'game-over'
 export interface Fruit { pos: Point; value: number; correct: boolean }
 export type Cause =
